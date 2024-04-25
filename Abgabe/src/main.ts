@@ -6,27 +6,6 @@ function getId(_id: string): HTMLElement {
 	return <HTMLElement>document.getElementById(_id);
 }
 
-let selectedTile: number = 0; 
-
-function swapTiles(_tileId: number): void {
-	if (selectedTile == null) {
-		selectedTile = _tileId;
-	}
-	else {
-		let secondTile = _tileId;
-		let selectedTileCol = Number(selectedTile.toString().at(0));
-		let selectedTileRow = Number(selectedTile.toString().at(1));
-		let secondTileCol = Number(secondTile.toString().at(0));
-		let secondTileRow = Number(secondTile.toString().at(1));
-
-		const tempTile = squares[selectedTileCol][selectedTileRow];
-		squares[selectedTileCol][selectedTileRow] = squares[secondTileCol][secondTileRow];
-		squares[secondTileCol][secondTileRow] = tempTile;
-
-		secondTile = 0;
-		visualizeSquares();
-	}
-}
 let squares: string[][] = [];
 const squaresDiv: HTMLElement = getId("squares");
 function createSquares() {
@@ -49,11 +28,40 @@ function visualizeSquares() {
 			let newInnerDiv = document.createElement("div");
 			newInnerDiv.id = i + "" + k; 
 			newInnerDiv.style.backgroundColor = "#" + squares[i][k];
-			newInnerDiv.addEventListener("click", function() {swapTiles(Number(this.id))});
+			newInnerDiv.addEventListener("click", function() {swapTiles((this.id));});
 			squaresDiv?.children[i].appendChild(newInnerDiv);
 		}
 	}
 }
 
-createSquares()
-visualizeSquares();
+let selectedTile: string | undefined = undefined; 
+
+function swapTiles(_tileId: string): void {
+	if (selectedTile == undefined) {
+		selectedTile = _tileId;
+		getId(selectedTile).className = "selected";
+	}
+	else {
+		let secondTile = _tileId;
+		let selectedTileCol = Number(selectedTile.charAt(0));
+		let selectedTileRow = Number(selectedTile.charAt(1));
+		let secondTileCol = Number(secondTile.charAt(0));
+		let secondTileRow = Number(secondTile.charAt(1));
+		getId(secondTileCol.toString() + "" + secondTileRow.toString()).className = "";
+		getId(selectedTileCol.toString() + "" + selectedTileRow.toString()).className = "";
+
+		const tempTile = squares[selectedTileCol][selectedTileRow];
+		squares[selectedTileCol][selectedTileRow] = squares[secondTileCol][secondTileRow];
+		squares[secondTileCol][secondTileRow] = tempTile;
+
+		selectedTile = undefined;
+		visualizeSquares();
+	}
+}
+
+function main(): void {
+	createSquares()
+	visualizeSquares();
+}
+
+main();

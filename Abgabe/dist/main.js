@@ -4,18 +4,6 @@
 function getId(_id) {
     return document.getElementById(_id);
 }
-let selectedTile = null;
-// function swapTiles(_tile: HTMLDivElement): void {
-// 	if (selectedTile == null) {
-// 		selectedTile = _tile;
-// 	}
-// 	else {
-// 		let secondTile = _tile;
-// 		let selectedTileParent = selectedTile.parentElement?.children;
-// 		let secondTileParent = secondTile.parentElement?.children;
-// 		let selectedTileRowNumber = selectedTile.parentElement.val
-// 	}
-// }
 let squares = [];
 const squaresDiv = getId("squares");
 function createSquares() {
@@ -37,11 +25,35 @@ function visualizeSquares() {
             let newInnerDiv = document.createElement("div");
             newInnerDiv.id = i + "" + k;
             newInnerDiv.style.backgroundColor = "#" + squares[i][k];
-            newInnerDiv.addEventListener("click", function () { });
+            newInnerDiv.addEventListener("click", function () { swapTiles((this.id)); });
             squaresDiv === null || squaresDiv === void 0 ? void 0 : squaresDiv.children[i].appendChild(newInnerDiv);
         }
     }
 }
-createSquares();
-visualizeSquares();
+let selectedTile = undefined;
+function swapTiles(_tileId) {
+    if (selectedTile == undefined) {
+        selectedTile = _tileId;
+        getId(selectedTile).className = "selected";
+    }
+    else {
+        let secondTile = _tileId;
+        let selectedTileCol = Number(selectedTile.charAt(0));
+        let selectedTileRow = Number(selectedTile.charAt(1));
+        let secondTileCol = Number(secondTile.charAt(0));
+        let secondTileRow = Number(secondTile.charAt(1));
+        getId(secondTileCol.toString() + "" + secondTileRow.toString()).className = "";
+        getId(selectedTileCol.toString() + "" + selectedTileRow.toString()).className = "";
+        const tempTile = squares[selectedTileCol][selectedTileRow];
+        squares[selectedTileCol][selectedTileRow] = squares[secondTileCol][secondTileRow];
+        squares[secondTileCol][secondTileRow] = tempTile;
+        selectedTile = undefined;
+        visualizeSquares();
+    }
+}
+function main() {
+    createSquares();
+    visualizeSquares();
+}
+main();
 //# sourceMappingURL=main.js.map

@@ -1,9 +1,30 @@
+:root {
+	--squareSize: 60px;
+}
+
+#squares {
+	border: 5px white solid;
+	display: inline-block;
+}
+
 #squares > div {
-	width: 400px;
+	width: calc(var(--squareSize) * 10);
 	display: flex;
 }
 
 #squares > div > div {
-	width: 40px;
-	height: 40px;
+	width: var(--squareSize);
+	height: var(--squareSize);
+}
+
+.selected  {
+	width: calc(var(--squareSize) * 1.5);
+	height: calc(var(--squareSize) * 1.5);
+	transform: rotate(10deg);
+}
+
+body {
+	background-color: lightblue;
+	display: flex;
+	justify-content: center;
 }
