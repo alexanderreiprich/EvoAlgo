@@ -35,7 +35,6 @@ function visualizeSquares() {
 }
 
 let selectedTile: string | undefined = undefined; 
-
 function swapTiles(_tileId: string): void {
 	if (selectedTile == undefined) {
 		selectedTile = _tileId;
@@ -59,9 +58,19 @@ function swapTiles(_tileId: string): void {
 	}
 }
 
+function simulateSwapping(): void {
+	setInterval(() => {
+		let a: string = (Math.floor(Math.random() * 10) + "" + (Math.floor(Math.random() * 10))).toString();
+		let b: string = (Math.floor(Math.random() * 10) + "" + (Math.floor(Math.random() * 10))).toString();
+		getId(a).click();
+		getId(b).click();
+	}, 100);
+}
+
 function main(): void {
 	createSquares()
 	visualizeSquares();
+	simulateSwapping();
 }
 
 main();

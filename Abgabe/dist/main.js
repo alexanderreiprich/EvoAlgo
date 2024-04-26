@@ -51,9 +51,18 @@ function swapTiles(_tileId) {
         visualizeSquares();
     }
 }
+function simulateSwapping() {
+    setInterval(() => {
+        let a = (Math.floor(Math.random() * 10) + "" + (Math.floor(Math.random() * 10))).toString();
+        let b = (Math.floor(Math.random() * 10) + "" + (Math.floor(Math.random() * 10))).toString();
+        getId(a).click();
+        getId(b).click();
+    }, 100);
+}
 function main() {
     createSquares();
     visualizeSquares();
+    simulateSwapping();
 }
 main();
 //# sourceMappingURL=main.js.map

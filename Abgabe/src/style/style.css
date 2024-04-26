@@ -2,6 +2,12 @@
 	--squareSize: 60px;
 }
 
+body {
+	background-color: lightblue;
+	display: flex;
+	justify-content: center;
+}
+
 #squares {
 	border: 5px white solid;
 	display: inline-block;
@@ -21,10 +27,4 @@
 	width: calc(var(--squareSize) * 1.5);
 	height: calc(var(--squareSize) * 1.5);
 	transform: rotate(10deg);
-}
-
-body {
-	background-color: lightblue;
-	display: flex;
-	justify-content: center;
 }
