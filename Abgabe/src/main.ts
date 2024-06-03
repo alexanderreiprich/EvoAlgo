@@ -1,16 +1,22 @@
 import { Fitness } from "./classes/fitness";
 // hillclimber(rateCandidateBalanced, mutateCandidateProbability, 20, 1000);
 
-let squares: string[][] = [];
+const squaresDiv: HTMLElement = getId("squares");
+const resetBtn: HTMLButtonElement = <HTMLButtonElement>getId("resetBtn");
+resetBtn.addEventListener("click", resetSquaresToOrigin);
+
+export let squares: string[][] = createSquares();
+localStorage.setItem("squares", JSON.stringify(squares));
+
 let selectedTile: string | undefined = undefined;
 let fitness: Fitness = new Fitness();
-const squaresDiv: HTMLElement = getId("squares");
 
 function getId(_id: string): HTMLElement {
 	return <HTMLElement>document.getElementById(_id);
 }
 
 function createSquares() {
+	let squares: string[][] = [];
 	for (let i = 0; i < 10; i++) {
 		squares[i] = new Array();
 		for (let k = 0; k < 10; k++) {
@@ -18,7 +24,7 @@ function createSquares() {
 			squares[i][k] = randomColor;
 		}
 	}
-	console.log(squares);
+	return squares;
 }
 
 function visualizeSquares() {
@@ -55,8 +61,7 @@ function swapTiles(_tileId: string): void {
 		squares[secondTileCol][secondTileRow] = tempTile;
 
 		selectedTile = undefined;
-		visualizeSquares();
-		fitness.calcFitness(squares);
+		update();
 	}
 }
 
@@ -69,11 +74,15 @@ function simulateSwapping(): void {
 	}, 100);
 }
 
-function main(): void {
-	createSquares()
-	visualizeSquares();
-	console.log(fitness.calcFitness(squares));
-	// simulateSwapping();
+function resetSquaresToOrigin(): void {
+	const squaresString: string | null = localStorage.getItem("squares");
+	squares = squaresString ? JSON.parse(squaresString) : createSquares();
+	update();
 }
 
-main();
+function update(): void {
+	visualizeSquares();
+	fitness.calcFitness();
+}
+
+update();

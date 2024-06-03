@@ -1,31 +1,26 @@
+import { squares } from "../main";
+
 export class Fitness {
-  public calcFitness(_squares: string[][]): number {
-    let squares = _squares;
+  public calcFitness(): number {
     let fitness: number = 0;
     for (let i = 0; i < squares.length; i++) {
       for (let k = 0; k < squares[i].length - 1; k++) {
-        let similarity = this.getSimilarity(squares[i][k], squares[i][k + 1])
-        if (similarity) {
-          fitness += similarity;
-        }
+        let similarity = this.averageColorDistance(squares, i, k);
+        fitness += similarity;
       }
     }
     document.getElementById("fitness")!.innerHTML = "Fitness: " + fitness.toFixed(4);
-    console.log("wee");
     return fitness;
   }
 
-  private hexToRGB(_hex: string): [number, number, number] | null {
-    const match = _hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
-    if (!match) {
-      return null;
-    }
+  private hexToRGB(_hex: string): [number, number, number] {
+    
+    let bigint = parseInt(_hex, 16);
+    let r = (bigint >> 16) & 255;
+    let g = (bigint >> 8) & 255;
+    let b = bigint & 255;
 
-    return [
-      parseInt(match[1], 16),
-      parseInt(match[2], 16),
-      parseInt(match[3], 16)
-    ];
+    return [r, g, b];
   }
 
   private calcColorDistance(_rgb1: [number, number, number], _rgb2: [number, number, number]): number {
@@ -35,15 +30,29 @@ export class Fitness {
     return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
   }
 
-  private getSimilarity(_hex1: string, _hex2: string) {
-    const rgb1 = this.hexToRGB(_hex1);
-    const rgb2 = this.hexToRGB(_hex2);
+  private averageColorDistance(squares: string[][], tileX: number, tileY: number): number {
+    const neighbors = [
+      [0, 1], [1, 0], [0, -1], [-1, 0],  // direkte Nachbarn (oben, rechts, unten, links)
+      [-1, -1], [-1, 1], [1, -1], [1, 1] // diagonale Nachbarn (oben-links, oben-rechts, unten-links, unten-rechts)
+    ];
 
-    if (!rgb1 || !rgb2) {
-      return null;
+    let centralColor = this.hexToRGB(squares[tileX][tileY]);
+    let totalDistance = 0;
+    let count = 0;
+
+    for (let [dx, dy] of neighbors) {
+      let nx = tileX + dx;
+      let ny = tileY + dy;
+
+      if (nx >= 0 && nx < squares.length && ny >= 0 && ny < squares[0].length) {
+        let neighborColor = this.hexToRGB(squares[nx][ny]);
+        totalDistance += this.calcColorDistance(centralColor, neighborColor);
+        count++;
+      }
     }
 
-    return this.calcColorDistance(rgb1, rgb2);
+    return count === 0 ? 0 : totalDistance / count;
   }
+
 }
 
