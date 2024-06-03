@@ -9,6 +9,7 @@ export function calcFitness(_squares: string[][]): number {
       }
     }
   }
+
   return fitness; 
 }
 

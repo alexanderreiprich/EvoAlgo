@@ -54,6 +54,7 @@ function swapTiles(_tileId: string): void {
 
 		selectedTile = undefined;
 		visualizeSquares();
+		calcFitness(squares);
 	}
 }
 
@@ -84,6 +85,7 @@ export function calcFitness(_squares: string[][]): number {
       }
     }
   }
+	document.getElementById("fitness")!.innerHTML = "Fitness: " + fitness.toFixed(4);
   return fitness; 
 }
 

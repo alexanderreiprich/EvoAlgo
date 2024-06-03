@@ -28,3 +28,16 @@ body {
 	height: calc(var(--squareSize) * 1.5);
 	transform: rotate(10deg);
 }
+
+p {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 25pt;
+	color: black;
+	background-color: white;
+	height: fit-content;
+	margin-left: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-width: 2px;
+	border-radius: 5px;
+}

@@ -50,6 +50,7 @@ function swapTiles(_tileId) {
         squares[secondTileCol][secondTileRow] = tempTile;
         selectedTile = undefined;
         visualizeSquares();
+        calcFitness(squares);
     }
 }
 function simulateSwapping() {
@@ -77,6 +78,7 @@ function calcFitness(_squares) {
             }
         }
     }
+    document.getElementById("fitness").innerHTML = "Fitness: " + fitness.toFixed(4);
     return fitness;
 }
 exports.calcFitness = calcFitness;
