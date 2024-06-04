@@ -1,11 +1,13 @@
+import { Coordinates } from "../interfaces/Coordinates";
+import { Field } from "./Field";
+
 export class HillClimber {
 
 	public hillclimber(ratingFunc: Function, mutatingFunc: Function, bitLength: number, maxGens: number): void {
 		let gen: number = 0;
 		let candidate: number[] = this.createCandidate(bitLength);
 		let ratingPrevGen: number = ratingFunc(candidate);
-		console.log(candidate.toString() + " - Gen: " + gen + ", Rating: " + ratingFunc(candidate)
-		);
+		console.log(candidate.toString() + " - Gen: " + gen + ", Rating: " + ratingFunc(candidate));
 		while (ratingPrevGen != bitLength && gen < maxGens) {
 			gen++;
 			ratingPrevGen = ratingFunc(candidate);
@@ -24,6 +26,31 @@ export class HillClimber {
 			candidate[i] = Math.round(Math.random());
 		}
 		return candidate;
+	}
+
+	public createInitialPopulation(): Field[] {
+		let initialField: Field = new Field();
+		let population: Field[] = [];
+		for (let i = 0; i < 3; i++) {
+			let newField: Field = initialField;
+			// for (let k = 0; k < 100; k++) {
+				console.log(newField.getSquares())
+				let tile1: Coordinates = this.chooseRandomTile();
+				let tile2: Coordinates = this.chooseRandomTile();
+				newField.swapSquares({x: 0, y: 0}, {x: 1, y: 0});
+				console.log(newField.getSquares())
+				//TODO: swapping doesn't work
+			// }
+			population.push(newField);
+		}
+		
+		return population;
+	}
+
+	private chooseRandomTile(): Coordinates {
+		let _x: number = Math.floor(Math.random() * 10);
+		let _y: number = Math.floor(Math.random() * 10);
+		return {x: _x, y: _y}
 	}
 	
 	private rateCandidate(candidate: number[]): number {
