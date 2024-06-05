@@ -1,13 +1,23 @@
 export class Field {
 
-	constructor() {
-		this.createSquares();
+	constructor(_squares?: string[][]) {
+		if (_squares) {
+			this.setSquares(_squares);
+		}
+		else {
+			this.createSquares();
+		}
+		
 	}
 
 	private squares: string[][] = [];
 
 	public getSquares(): string[][] {
 		return this.squares;
+	}
+
+	public setSquares(_squares: string[][]): void {
+		this.squares = _squares;
 	}
 
 	public createSquares() {
@@ -18,14 +28,18 @@ export class Field {
 				this.squares[i][k] = randomColor;
 			}
 		}
-		console.log(this.squares);
 		return this.squares;
 	}
 
-	public swapSquares(_square1: {x: number, y: number}, _square2: {x: number, y: number}): void {
+	public swapSquares(_square1: {x: number, y: number}, _square2: {x: number, y: number}): string[][] {
 		const tempTile = this.squares[_square1.x][_square1.y];
-		this.squares[_square1.x][_square1.y] = this.squares[_square2.x][_square2.y];
-		this.squares[_square2.x][_square2.y] = tempTile;
+		let newSquares: string[][] = this.squares.slice();
+		//console.log(newSquares[_square1.x][_square1.y], newSquares[_square2.x][_square2.y], newSquares);
+		newSquares[_square1.x][_square1.y] = newSquares[_square2.x][_square2.y];
+		newSquares[_square2.x][_square2.y] = tempTile;
+		//console.log(newSquares[_square1.x][_square1.y], newSquares[_square2.x][_square2.y], newSquares);
+		this.setSquares(newSquares);
+		return this.squares;
 	}
 
 }

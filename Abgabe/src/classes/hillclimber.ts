@@ -32,15 +32,16 @@ export class HillClimber {
 		let initialField: Field = new Field();
 		let population: Field[] = [];
 		for (let i = 0; i < 3; i++) {
-			let newField: Field = initialField;
-			// for (let k = 0; k < 100; k++) {
-				console.log(newField.getSquares())
+			let newField: Field = new Field(initialField.getSquares());
+			for (let k = 0; k < 100; k++) {
+				//console.log(newField.getSquares())
+				// let tile1: Coordinates = {x: 0, y: 0};
+				// let tile2: Coordinates = {x: 1, y: 0};
 				let tile1: Coordinates = this.chooseRandomTile();
 				let tile2: Coordinates = this.chooseRandomTile();
-				newField.swapSquares({x: 0, y: 0}, {x: 1, y: 0});
-				console.log(newField.getSquares())
-				//TODO: swapping doesn't work
-			// }
+				newField.swapSquares(tile1, tile2);
+				//console.log(newField.getSquares());
+			}
 			population.push(newField);
 		}
 		
