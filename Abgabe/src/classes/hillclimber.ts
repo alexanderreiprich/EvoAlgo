@@ -19,7 +19,7 @@ export class HillClimber {
 			}
 		}
 	}
-	
+
 	private createCandidate(length: number): number[] {
 		let candidate: number[] = [];
 		for (let i = 0; i < length; i++) {
@@ -30,30 +30,25 @@ export class HillClimber {
 
 	public createInitialPopulation(): Field[] {
 		let initialField: Field = new Field();
-		let population: Field[] = [];
+		let population: Field[] = [initialField];
 		for (let i = 0; i < 3; i++) {
 			let newField: Field = new Field(initialField.getSquares());
 			for (let k = 0; k < 100; k++) {
-				//console.log(newField.getSquares())
-				// let tile1: Coordinates = {x: 0, y: 0};
-				// let tile2: Coordinates = {x: 1, y: 0};
 				let tile1: Coordinates = this.chooseRandomTile();
 				let tile2: Coordinates = this.chooseRandomTile();
 				newField.swapSquares(tile1, tile2);
-				//console.log(newField.getSquares());
 			}
 			population.push(newField);
 		}
-		
 		return population;
 	}
 
 	private chooseRandomTile(): Coordinates {
 		let _x: number = Math.floor(Math.random() * 10);
 		let _y: number = Math.floor(Math.random() * 10);
-		return {x: _x, y: _y}
+		return { x: _x, y: _y }
 	}
-	
+
 	private rateCandidate(candidate: number[]): number {
 		for (let i = 0; i < candidate.length; i++) {
 			if (candidate[i] == 1) {
@@ -62,25 +57,25 @@ export class HillClimber {
 		}
 		return candidate.length;
 	}
-	
+
 	private rateCandidateBalanced(candidate: number[]): number {
 		let balancedZeros: number = this.rateCandidate(candidate);
 		let oneMax: number = 0;
-	
+
 		for (let i = 0; i < candidate.length; i++) {
 			if (candidate[i] == 1) oneMax++;
 		}
-	
+
 		return Math.min(balancedZeros, oneMax);
 	}
-	
+
 	private mutateCandidate(candidate: number[]): number[] {
 		let newCandidate: number[] = candidate.slice();
 		let i = Math.floor(Math.random() * candidate.length);
 		newCandidate[i] = 1 - candidate[i];
 		return newCandidate;
 	}
-	
+
 	private mutateCandidateProbability(candidate: number[]): number[] {
 		let newCandidate: number[] = candidate.slice();
 		for (let i = 0; i < candidate.length; i++) {
