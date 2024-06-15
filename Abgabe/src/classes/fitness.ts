@@ -1,9 +1,9 @@
-import { field } from "../main";
+import { Field } from "./Field";
 
 export class Fitness {
-  public calcFitness(): number {
+  public calcFitness(_field: Field): number {
     let fitness: number = 0;
-    let squares: string[][] = field.getSquares();
+    let squares: string[][] = _field.getSquares();
     for (let i = 0; i < squares.length; i++) {
       for (let k = 0; k < squares[i].length - 1; k++) {
         let similarity = this.averageColorDistance(squares, i, k);

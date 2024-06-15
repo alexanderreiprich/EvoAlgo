@@ -7,7 +7,6 @@ export class Field {
 		else {
 			this.createSquares();
 		}
-		
 	}
 
 	private squares: string[][] = [];
@@ -39,7 +38,8 @@ export class Field {
 			return row.slice();
 		});
 		this.squares[_square1.x][_square1.y] = this.squares[_square2.x][_square2.y].slice();
-		this.squares[_square2.x][_square2.y] = tempTile[_square1.x][_square2.y];
+		this.squares[_square2.x][_square2.y] = tempTile[_square1.x][_square1.y].slice();
+
 		return this.squares;
 	}
 }
