@@ -125,7 +125,7 @@ export class HillClimber {
 		let newCandidate: Field = new Field(candidate.getSquares().map((row) => {
 			return row.slice();
 		}));
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < (Math.round(Math.random()) * 20); i++) {
 			let tile1: Coordinates = this.chooseRandomTile();
 			let tile2: Coordinates = this.chooseRandomTile();
 			newCandidate.swapSquares(tile1, tile2);

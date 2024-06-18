@@ -1,35 +1,29 @@
-import { Fitness } from "./classes/fitness";
 import { Field } from "./classes/Field";
-import { Coordinates } from "./interfaces/Coordinates";
 import { Visual } from "./classes/Visual";
 import { HillClimber } from "./classes/hillclimber";
 
 const resetBtn: HTMLButtonElement = <HTMLButtonElement>getId("resetBtn");
 const nextPopBtn: HTMLButtonElement = <HTMLButtonElement>getId("nextPopBtn");
+const populationSizeInput: HTMLInputElement = <HTMLInputElement>getId("populationSize");
+const maxGenerationsInput: HTMLInputElement = <HTMLInputElement>getId("maxGenerations");
+const startAlgorithmBtn: HTMLButtonElement = <HTMLButtonElement>getId("startAlgo");
 resetBtn.addEventListener("click", resetSquaresToOrigin);
 nextPopBtn.addEventListener("click", nextPopulation);
+startAlgorithmBtn.addEventListener("click", startAlgorithm);
 
 export let field: Field = new Field();
 localStorage.setItem("squares", JSON.stringify(field));
 
-let fitness: Fitness = new Fitness();
+let hc: HillClimber = new HillClimber();
 
 export function getId(_id: string): HTMLElement {
 	return <HTMLElement>document.getElementById(_id);
 }
 
-function simulateSwapping(): void {
-	setInterval(() => {
-		let a: string = (Math.floor(Math.random() * 10) + "" + (Math.floor(Math.random() * 10))).toString();
-		let b: string = (Math.floor(Math.random() * 10) + "" + (Math.floor(Math.random() * 10))).toString();
-		getId(a).click();
-		getId(b).click();
-	}, 100);
-}
-
 function resetSquaresToOrigin(): void {
 	const squaresString: string | null = localStorage.getItem("squares");
-	field = squaresString ? JSON.parse(squaresString) : field.createSquares();
+	squaresString ? field.setSquares(JSON.parse(squaresString).squares) : field.createSquares();
+	Visual.getInstance().updateCurGeneration(0);
 	Visual.getInstance().update(field);
 }
 
@@ -49,8 +43,8 @@ function nextPopulation(): void {
 	Visual.getInstance().update(field);
 }
 
-Visual.getInstance().update(field);
+function startAlgorithm(): void {
+	hc.hillclimber(Number(maxGenerationsInput.value), Number(populationSizeInput.value));
+}
 
-let hc: HillClimber = new HillClimber();
-console.log(hc.createInitialPopulation());
-hc.hillclimber(2000, 100);
+Visual.getInstance().update(field);
