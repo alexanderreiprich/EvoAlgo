@@ -11,6 +11,7 @@ body {
 #squares {
 	border: 5px white solid;
 	display: inline-block;
+	margin-right: 5px;
 }
 
 #squares > div {
@@ -40,4 +41,11 @@ body {
 	padding-right: 5px;
 	border-width: 2px;
 	border-radius: 5px;
+}
+
+#algoActions {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100px;
 }

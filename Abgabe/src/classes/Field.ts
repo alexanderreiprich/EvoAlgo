@@ -1,11 +1,12 @@
 export class Field {
 
-	constructor(_squares?: string[][]) {
+	constructor(_squares?: string[][], _bw?: boolean) {
 		if (_squares) {
 			this.setSquares(_squares);
 		}
 		else {
-			this.createSquares();
+			_bw ? this.createSquares(true) : this.createSquares();
+
 		}
 	}
 
@@ -22,20 +23,25 @@ export class Field {
 		this.squares = _squares;
 	}
 
-	public createSquares() {
+	public createSquares(bw?: boolean) {
 		for (let i = 0; i < 10; i++) {
 			this.squares[i] = new Array();
 			for (let k = 0; k < 10; k++) {
-				// let randomColor = Math.floor(Math.random() * 16777215).toString(16);
-				// this.squares[i][k] = randomColor;
+				if (bw) {
 				let color = Math.random() > 0.5 ? "000000" : "ffffff";
 				this.squares[i][k] = color;
+				}
+				else {
+					let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+					this.squares[i][k] = randomColor;
+				}
 			}
 		}
+		console.log(this.squares);
 		return this.squares;
 	}
 
-	public swapSquares(_square1: {x: number, y: number}, _square2: {x: number, y: number}): string[][] {
+	public swapSquares(_square1: { x: number, y: number }, _square2: { x: number, y: number }): string[][] {
 		const tempTile: string[][] = this.squares.map((row) => {
 			return row.slice();
 		});

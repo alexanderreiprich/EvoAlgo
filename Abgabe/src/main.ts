@@ -6,7 +6,9 @@ const resetBtn: HTMLButtonElement = <HTMLButtonElement>getId("resetBtn");
 const nextPopBtn: HTMLButtonElement = <HTMLButtonElement>getId("nextPopBtn");
 const populationSizeInput: HTMLInputElement = <HTMLInputElement>getId("populationSize");
 const maxGenerationsInput: HTMLInputElement = <HTMLInputElement>getId("maxGenerations");
+const bwCheckbox: HTMLInputElement = <HTMLInputElement>getId("bwCheckbox");
 const startAlgorithmBtn: HTMLButtonElement = <HTMLButtonElement>getId("startAlgo");
+
 resetBtn.addEventListener("click", resetSquaresToOrigin);
 nextPopBtn.addEventListener("click", nextPopulation);
 startAlgorithmBtn.addEventListener("click", startAlgorithm);
@@ -44,7 +46,7 @@ function nextPopulation(): void {
 }
 
 function startAlgorithm(): void {
-	hc.hillclimber(Number(maxGenerationsInput.value), Number(populationSizeInput.value));
+	hc.hillclimber(Number(maxGenerationsInput.value), Number(populationSizeInput.value), bwCheckbox.checked);
 }
 
 Visual.getInstance().update(field);

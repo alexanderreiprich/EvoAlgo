@@ -28,10 +28,9 @@ export class HillClimber {
 		}
 	}
 
-	public async hillclimber(maxGens: number, popSize: number): Promise<void> {
+	public async hillclimber(maxGens: number, popSize: number, bw: boolean): Promise<void> {
 		let gen: number = 0;
-		let candidates: Item[] = this.createInitialPopulation();
-
+		let candidates: Item[] = this.createInitialPopulation(bw);
 		let ratings: Item[] = candidates.map(candidate => ({
 			value: this.fitness.calcFitness(<Field>candidate),
 			item: <Field>candidate
@@ -79,8 +78,8 @@ export class HillClimber {
 		return candidate;
 	}
 
-	public createInitialPopulation(): Field[] {
-		let initialField: Field = new Field();
+	public createInitialPopulation(_bw?: boolean): Field[] {
+		let initialField: Field = new Field(undefined, _bw);
 		let population: Field[] = [];
 		for (let i = 0; i < 10; i++) {
 			let newField: Field = new Field(initialField.getSquares());
