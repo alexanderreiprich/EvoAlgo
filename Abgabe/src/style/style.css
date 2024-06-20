@@ -8,6 +8,15 @@ body {
 	justify-content: center;
 }
 
+
+p, label, input {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input, button {
+	margin-left: 10px;
+}
+
 #squares {
 	border: 5px white solid;
 	display: inline-block;
@@ -30,8 +39,8 @@ body {
 	transform: rotate(10deg);
 }
 
+
 #actions > p {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 25pt;
 	color: black;
 	background-color: white;
