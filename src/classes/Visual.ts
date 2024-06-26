@@ -1,5 +1,5 @@
 import { Field } from "./Field";
-import { Fitness } from "./fitness";
+import { Fitness } from "./Fitness";
 import { Coordinates } from "../interfaces/Coordinates";
 
 export class Visual {

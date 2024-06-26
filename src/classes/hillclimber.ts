@@ -1,6 +1,6 @@
 import { Coordinates } from "../interfaces/Coordinates";
 import { Field } from "./Field";
-import { Fitness } from "./fitness";
+import { Fitness } from "./Fitness";
 import { Visual } from "./Visual";
 
 type Item = { [key: string]: any};
@@ -10,23 +10,6 @@ export class HillClimber {
 	private curPopulations: Field[] = [];
 	private fitness: Fitness = new Fitness();
 	private delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-
-	public hillclimber2(ratingFunc: Function, mutatingFunc: Function, bitLength: number, maxGens: number): void {
-		let gen: number = 0;
-		let candidate: number[] = this.createCandidate(bitLength);
-		let ratingPrevGen: number = ratingFunc(candidate);
-		console.log(candidate.toString() + " - Gen: " + gen + ", Rating: " + ratingFunc(candidate));
-		while (ratingPrevGen != bitLength && gen < maxGens) {
-			gen++;
-			ratingPrevGen = ratingFunc(candidate);
-			let newCandidate: number[] = mutatingFunc(candidate);
-			let ratingNewGen: number = ratingFunc(newCandidate);
-			if (ratingNewGen > ratingPrevGen) {
-				candidate = newCandidate;
-				console.log(candidate.toString() + " - Gen: " + gen + ", Rating: " + ratingFunc(candidate));
-			}
-		}
-	}
 
 	public async hillclimber(maxGens: number, popSize: number, bw: boolean): Promise<void> {
 		let gen: number = 0;
@@ -46,7 +29,7 @@ export class HillClimber {
 			let newCandidates: Item[] = [];
 
 			for (let i = 0; i < Math.floor(popSize); i++) {
-				let mutatedCandidate: Field = this.mutateCandidate(best[0]);
+				let mutatedCandidate: Field = this.mutateCandidate(best[0], gen, maxGens);
 				let newCandidate = {
 					value: this.fitness.calcFitness(mutatedCandidate),
 					item: mutatedCandidate
@@ -70,14 +53,6 @@ export class HillClimber {
 		return this.curPopulations;
 	}
 
-	private createCandidate(length: number): number[] {
-		let candidate: number[] = [];
-		for (let i = 0; i < length; i++) {
-			candidate[i] = Math.round(Math.random());
-		}
-		return candidate;
-	}
-
 	public createInitialPopulation(_bw?: boolean): Field[] {
 		let initialField: Field = new Field(undefined, _bw);
 		let population: Field[] = [];
@@ -95,32 +70,12 @@ export class HillClimber {
 	}
 
 	private chooseRandomTile(): Coordinates {
-		let _x: number = Math.floor(Math.random() * 10);
-		let _y: number = Math.floor(Math.random() * 10);
+		let _x: number = Math.floor(Math.random() * 5);
+		let _y: number = Math.floor(Math.random() * 5);
 		return { x: _x, y: _y }
 	}
 
-	private rateCandidate(candidate: number[]): number {
-		for (let i = 0; i < candidate.length; i++) {
-			if (candidate[i] == 1) {
-				return i;
-			}
-		}
-		return candidate.length;
-	}
-
-	private rateCandidateBalanced(candidate: number[]): number {
-		let balancedZeros: number = this.rateCandidate(candidate);
-		let oneMax: number = 0;
-
-		for (let i = 0; i < candidate.length; i++) {
-			if (candidate[i] == 1) oneMax++;
-		}
-
-		return Math.min(balancedZeros, oneMax);
-	}
-
-	private mutateCandidate(candidate: Field): Field {
+	private mutateCandidate(candidate: Field, gen: number, maxGens: number): Field {
 		let newCandidate: Field = new Field(candidate.getSquares().map((row) => {
 			return row.slice();
 		}));
@@ -128,16 +83,6 @@ export class HillClimber {
 			let tile1: Coordinates = this.chooseRandomTile();
 			let tile2: Coordinates = this.chooseRandomTile();
 			newCandidate.swapSquares(tile1, tile2);
-		}
-		return newCandidate;
-	}
-
-	private mutateCandidateProbability(candidate: number[]): number[] {
-		let newCandidate: number[] = candidate.slice();
-		for (let i = 0; i < candidate.length; i++) {
-			if (Math.random() < (1 / candidate.length)) {
-				newCandidate[i] = 1 - candidate[i];
-			}
 		}
 		return newCandidate;
 	}

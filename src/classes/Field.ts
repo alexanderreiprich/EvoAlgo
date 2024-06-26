@@ -24,12 +24,25 @@ export class Field {
 	}
 
 	public createSquares(bw?: boolean) {
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 5; i++) {
 			this.squares[i] = new Array();
-			for (let k = 0; k < 10; k++) {
+			for (let k = 0; k < 5; k++) {
 				if (bw) {
-				let color = Math.random() > 0.5 ? "000000" : "ffffff";
-				this.squares[i][k] = color;
+					let color: string = "";
+					let randNumber: number = Math.random();
+					if (randNumber < 0.25) {
+						color = "000000";
+					}
+					else if (randNumber < 0.5) {
+						color = "444444";
+					}
+					else if (randNumber < 0.75) {
+						color = "aaaaaa";
+					}
+					else {
+						color = "ffffff";
+					}
+					this.squares[i][k] = color;
 				}
 				else {
 					let randomColor = Math.floor(Math.random() * 16777215).toString(16);

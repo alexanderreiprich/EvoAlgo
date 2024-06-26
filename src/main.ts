@@ -1,6 +1,6 @@
 import { Field } from "./classes/Field";
 import { Visual } from "./classes/Visual";
-import { HillClimber } from "./classes/hillclimber";
+import { HillClimber } from "./classes/Hillclimber";
 
 const resetBtn: HTMLButtonElement = <HTMLButtonElement>getId("resetBtn");
 const nextPopBtn: HTMLButtonElement = <HTMLButtonElement>getId("nextPopBtn");
