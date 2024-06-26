@@ -21,10 +21,10 @@ input, button {
 	border: 5px white solid;
 	display: inline-block;
 	margin-right: 5px;
+	height: 100%;
 }
 
 #squares > div {
-	width: calc(var(--squareSize) * 10);
 	display: flex;
 }
 

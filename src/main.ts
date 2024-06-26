@@ -6,6 +6,7 @@ const resetBtn: HTMLButtonElement = <HTMLButtonElement>getId("resetBtn");
 const nextPopBtn: HTMLButtonElement = <HTMLButtonElement>getId("nextPopBtn");
 const populationSizeInput: HTMLInputElement = <HTMLInputElement>getId("populationSize");
 const maxGenerationsInput: HTMLInputElement = <HTMLInputElement>getId("maxGenerations");
+const fieldSizeInput: HTMLInputElement = <HTMLInputElement>getId("fieldSize");
 const bwCheckbox: HTMLInputElement = <HTMLInputElement>getId("bwCheckbox");
 const startAlgorithmBtn: HTMLButtonElement = <HTMLButtonElement>getId("startAlgo");
 
@@ -13,7 +14,7 @@ resetBtn.addEventListener("click", resetSquaresToOrigin);
 nextPopBtn.addEventListener("click", nextPopulation);
 startAlgorithmBtn.addEventListener("click", startAlgorithm);
 
-export let field: Field = new Field();
+export let field: Field = new Field(5);
 localStorage.setItem("squares", JSON.stringify(field));
 
 let hc: HillClimber = new HillClimber();
@@ -24,7 +25,7 @@ export function getId(_id: string): HTMLElement {
 
 function resetSquaresToOrigin(): void {
 	const squaresString: string | null = localStorage.getItem("squares");
-	squaresString ? field.setSquares(JSON.parse(squaresString).squares) : field.createSquares();
+	squaresString ? field.setSquares(JSON.parse(squaresString).squares) : field.createSquares(Number(fieldSizeInput.value));
 	Visual.getInstance().updateCurGeneration(0);
 	Visual.getInstance().update(field);
 }
@@ -46,7 +47,7 @@ function nextPopulation(): void {
 }
 
 function startAlgorithm(): void {
-	hc.hillclimber(Number(maxGenerationsInput.value), Number(populationSizeInput.value), bwCheckbox.checked);
+	hc.hillclimber(Number(maxGenerationsInput.value), Number(populationSizeInput.value), Number(fieldSizeInput.value), bwCheckbox.checked);
 }
 
 Visual.getInstance().update(field);

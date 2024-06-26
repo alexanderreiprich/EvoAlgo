@@ -11,9 +11,9 @@ export class HillClimber {
 	private fitness: Fitness = new Fitness();
 	private delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-	public async hillclimber(maxGens: number, popSize: number, bw: boolean): Promise<void> {
+	public async hillclimber(maxGens: number, popSize: number, fieldSize: number, bw: boolean): Promise<void> {
 		let gen: number = 0;
-		let candidates: Item[] = this.createInitialPopulation(bw);
+		let candidates: Item[] = this.createInitialPopulation(fieldSize, bw);
 		let ratings: Item[] = candidates.map(candidate => ({
 			value: this.fitness.calcFitness(<Field>candidate),
 			item: <Field>candidate
@@ -53,11 +53,12 @@ export class HillClimber {
 		return this.curPopulations;
 	}
 
-	public createInitialPopulation(_bw?: boolean): Field[] {
-		let initialField: Field = new Field(undefined, _bw);
+	public createInitialPopulation(_fieldSize: number, _bw?: boolean): Field[] {
+
+		let initialField: Field = new Field(_fieldSize, undefined, _bw);
 		let population: Field[] = [];
 		for (let i = 0; i < 10; i++) {
-			let newField: Field = new Field(initialField.getSquares());
+			let newField: Field = new Field(initialField.getSquares().length, initialField.getSquares());
 			for (let k = 0; k < 100; k++) {
 				let tile1: Coordinates = this.chooseRandomTile();
 				let tile2: Coordinates = this.chooseRandomTile();
@@ -76,7 +77,7 @@ export class HillClimber {
 	}
 
 	private mutateCandidate(candidate: Field, gen: number, maxGens: number): Field {
-		let newCandidate: Field = new Field(candidate.getSquares().map((row) => {
+		let newCandidate: Field = new Field(candidate.getSquares().length, candidate.getSquares().map((row) => {
 			return row.slice();
 		}));
 		for (let i = 0; i < (Math.round(Math.random()) * 20); i++) {

@@ -1,11 +1,11 @@
 export class Field {
 
-	constructor(_squares?: string[][], _bw?: boolean) {
+	constructor(_size: number, _squares?: string[][], _bw?: boolean) {
 		if (_squares) {
 			this.setSquares(_squares);
 		}
 		else {
-			_bw ? this.createSquares(true) : this.createSquares();
+			_bw ? this.createSquares(_size, true) : this.createSquares(_size);
 
 		}
 	}
@@ -23,10 +23,10 @@ export class Field {
 		this.squares = _squares;
 	}
 
-	public createSquares(bw?: boolean) {
-		for (let i = 0; i < 5; i++) {
+	public createSquares(_size: number, bw?: boolean) {
+		for (let i = 0; i < _size; i++) {
 			this.squares[i] = new Array();
-			for (let k = 0; k < 5; k++) {
+			for (let k = 0; k < _size; k++) {
 				if (bw) {
 					let color: string = "";
 					let randNumber: number = Math.random();
