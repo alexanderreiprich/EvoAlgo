@@ -14,9 +14,6 @@
 	</div>
 	<div id="actions">
 		<p id="fitness">Loading Fitness...</p>
-		<button id="resetBtn">Reset Field</button>
-		<button id="nextPopBtn" data-num="0">Next Individuum</button>
-		<p id="numberOfPopulation">Number of Population: 0</p>
 		<p id="currentGeneration">Current Generation: 0</p>
 		<div id="algoActions">
 			<label for="maxGenerations">Maximum Generations</label>
@@ -24,15 +21,23 @@
 			<label for="populationSize">Size of Population</label>
 			<input type="number" id="populationSize" placeholder="Size of Population" value="100">
 			<label for="fieldSize">Size of Field</label>
-			<input type="number" id="fieldSize" placeholder="Size of Field" value="5">
+			<input type="number" id="fieldSize" placeholder="Size of Field" value="10">
 			<div>
 				<input type="checkbox" id="bwCheckbox">
 				<label for="bwCheckbox">Black and White?</label>
+				<fieldset>
+					<div>
+						<input type="radio" id="opoRadio" name="algorithm" checked>
+						<label for="opoRadio">OnePlusOne-Algorithm</label> 
+					</div>
+					<div>
+						<input type="radio" id="geneticRadio" name="algorithm">
+						<label for="geneticRadio">Genetic-Algorithm</label> 
+					</div>
+				</fieldset>
 			</div>
 			<button id="startAlgo">Start Algorithm</button>
 		</div>
 	</div>
-	
-
 </body>
 </html>

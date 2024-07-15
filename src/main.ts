@@ -1,53 +1,40 @@
 import { Field } from "./classes/Field";
 import { Visual } from "./classes/Visual";
-import { HillClimber } from "./classes/Hillclimber";
+import { OnePlusOne } from "./classes/OnePlusOne";
+import { Genetic } from "./classes/Genetic";
 
-const resetBtn: HTMLButtonElement = <HTMLButtonElement>getId("resetBtn");
-const nextPopBtn: HTMLButtonElement = <HTMLButtonElement>getId("nextPopBtn");
+// Initialize HTML Inputs
 const populationSizeInput: HTMLInputElement = <HTMLInputElement>getId("populationSize");
 const maxGenerationsInput: HTMLInputElement = <HTMLInputElement>getId("maxGenerations");
 const fieldSizeInput: HTMLInputElement = <HTMLInputElement>getId("fieldSize");
 const bwCheckbox: HTMLInputElement = <HTMLInputElement>getId("bwCheckbox");
 const startAlgorithmBtn: HTMLButtonElement = <HTMLButtonElement>getId("startAlgo");
+const opoRadio: HTMLInputElement = <HTMLInputElement>getId("opoRadio");
 
-resetBtn.addEventListener("click", resetSquaresToOrigin);
-nextPopBtn.addEventListener("click", nextPopulation);
 startAlgorithmBtn.addEventListener("click", startAlgorithm);
 
-export let field: Field = new Field(5);
-localStorage.setItem("squares", JSON.stringify(field));
+export let field: Field = new Field(10);
+let opo: OnePlusOne = new OnePlusOne();
+let genetic: Genetic = new Genetic();
 
-let hc: HillClimber = new HillClimber();
-
+// Helper function for more readable code
 export function getId(_id: string): HTMLElement {
 	return <HTMLElement>document.getElementById(_id);
 }
 
-function resetSquaresToOrigin(): void {
-	const squaresString: string | null = localStorage.getItem("squares");
-	squaresString ? field.setSquares(JSON.parse(squaresString).squares) : field.createSquares(Number(fieldSizeInput.value));
-	Visual.getInstance().updateCurGeneration(0);
-	Visual.getInstance().update(field);
-}
-
-function nextPopulation(): void {
-	let fields: Field[] = hc.getPopulation();
-	let curNum: number = Number(nextPopBtn.getAttribute("num"));
-	field.setSquares(fields[curNum].getSquares());
-	if (curNum == fields.length-1) {
-		curNum = 0;
-		nextPopBtn.setAttribute("num", "0");
+// Starts the algorithm based on checked inputs
+function startAlgorithm(): void {
+	if (opoRadio.checked) {
+		console.log("Starting One-Plus-One-Algorithm");
+		opo.start(Number(maxGenerationsInput.value), Number(populationSizeInput.value), Number(fieldSizeInput.value), bwCheckbox.checked);
 	}
 	else {
-		curNum++;
-		nextPopBtn.setAttribute("num", curNum.toString());
+		if (bwCheckbox.checked) {
+			alert("Genetic Algorithm is incompatible with the black and white option.");
+		}
+		console.log("Starting Genetic Algorithm");
+		genetic.start(Number(maxGenerationsInput.value), Number(populationSizeInput.value), Number(fieldSizeInput.value), bwCheckbox.checked);
 	}
-	getId("numberOfPopulation").innerHTML = "Number of Population: " + (curNum);
-	Visual.getInstance().update(field);
-}
-
-function startAlgorithm(): void {
-	hc.hillclimber(Number(maxGenerationsInput.value), Number(populationSizeInput.value), Number(fieldSizeInput.value), bwCheckbox.checked);
 }
 
 Visual.getInstance().update(field);

@@ -1,6 +1,8 @@
 import { Field } from "./Field";
 
 export class Fitness {
+
+  // Calculates fitness from the given field and updates the HTML
   public calcFitness(_field: Field): number {
     let fitness: number = 0;
     let squares: string[][] = _field.getSquares();
@@ -10,12 +12,11 @@ export class Fitness {
         fitness += similarity;
       }
     }
-    document.getElementById("fitness")!.innerHTML = "Fitness: " + fitness.toFixed(4);
     return fitness;
   }
 
+  // Splits the hex value to array of RGB values
   private hexToRGB(_hex: string): [number, number, number] {
-    
     let bigint = parseInt(_hex, 16);
     let r = (bigint >> 16) & 255;
     let g = (bigint >> 8) & 255;
@@ -24,6 +25,7 @@ export class Fitness {
     return [r, g, b];
   }
 
+  // Calculates the distance between two given RGB values 
   private calcColorDistance(_rgb1: [number, number, number], _rgb2: [number, number, number]): number {
     const rDiff = _rgb1[0] - _rgb2[0];
     const gDiff = _rgb1[1] - _rgb2[1];
@@ -31,29 +33,27 @@ export class Fitness {
     return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
   }
 
-  private averageColorDistance(squares: string[][], tileX: number, tileY: number): number {
+  // Sums up the color distance between all neighbors of a given tile 
+  private averageColorDistance(_squares: string[][], _tileX: number, _tileY: number): number {
     const neighbors = [
-      [0, 1], [1, 0], [0, -1], [-1, 0],  // direkte Nachbarn (oben, rechts, unten, links)
-      [-1, -1], [-1, 1], [1, -1], [1, 1] // diagonale Nachbarn (oben-links, oben-rechts, unten-links, unten-rechts)
+      [0, 1], [1, 0], [0, -1], [-1, 0],  // direct neighbors (top, bottom, left, right)
+      [-1, -1], [-1, 1], [1, -1], [1, 1] // diagonal neighbors (top-left, top-right, bottom-left, bottom-right)
     ];
 
-    let centralColor = this.hexToRGB(squares[tileX][tileY]);
+    let centralColor = this.hexToRGB(_squares[_tileX][_tileY]);
     let totalDistance = 0;
     let count = 0;
 
     for (let [dx, dy] of neighbors) {
-      let nx = tileX + dx;
-      let ny = tileY + dy;
+      let nx = _tileX + dx;
+      let ny = _tileY + dy;
 
-      if (nx >= 0 && nx < squares.length && ny >= 0 && ny < squares[0].length) {
-        let neighborColor = this.hexToRGB(squares[nx][ny]);
+      if (nx >= 0 && nx < _squares.length && ny >= 0 && ny < _squares[0].length) {
+        let neighborColor = this.hexToRGB(_squares[nx][ny]);
         totalDistance += this.calcColorDistance(centralColor, neighborColor);
         count++;
       }
     }
-
     return count === 0 ? 0 : totalDistance / count;
   }
-
 }
-

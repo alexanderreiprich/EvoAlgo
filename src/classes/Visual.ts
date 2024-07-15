@@ -10,19 +10,21 @@ export class Visual {
 	private selectedTile: Coordinates = {x: -1, y: -1}
 	private fitness: Fitness = new Fitness();
 
+	// Handles Visuals as a singleton
 	constructor() {
 		Visual.instance = this;
 	}
-
 	public static getInstance(): Visual {
 		return Visual.instance;
 	}
 
+	// Helper function for more readable code
 	private getId(_id: string): HTMLElement {
 		return <HTMLElement>document.getElementById(_id);
 	}
 
-	public visualizeSquares(_field: Field) {
+	// Shows given field in the DOM
+	private visualizeSquares(_field: Field) {
 		let squares = _field.getSquares();
 		this.squaresDiv.innerHTML = "";
 		const parentThis = this;
@@ -39,10 +41,12 @@ export class Visual {
 		}
 	}
 
+	// Updates generation count
 	public updateCurGeneration(_curGen: number) {
 		this.getId("currentGeneration").innerHTML = "Current Generation: " + _curGen;
 	}
 
+	// Either selects the given tile as a selected tile or swaps it with the previously selected tile
 	public swapTiles(_field: Field, _tileId: Coordinates): void {
 		if (this.selectedTile.x == -1 && this.selectedTile.y == -1) {
 			this.selectedTile = _tileId;
@@ -58,11 +62,11 @@ export class Visual {
 		}
 	}
 
+	// Called to update all visuals
 	public update(_field: Field): void {
 		this.visualizeSquares(_field);
-		this.fitness.calcFitness(_field);
+		this.getId("fitness")!.innerHTML = "Fitness: " + this.fitness.calcFitness(_field).toFixed(4);
 	}
-	
 }
 
 export default Visual.getInstance();
